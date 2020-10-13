@@ -1,10 +1,9 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-
-import Layout from "../components/layout"
+import Img from "gatsby-image"
 
 const ProductsPage = ({ data }) => (
-  <Layout>
+  <div>
     <h1>Products</h1>
     <ul>
       {data.allShopifyProduct.edges.map(({ node }) => (
@@ -14,30 +13,40 @@ const ProductsPage = ({ data }) => (
             {" - "}${node.priceRange.minVariantPrice.amount}
           </h3>
           <p>{node.description}</p>
+          <Img fluid={node.images[0].localFile.childImageSharp.fluid} />
         </li>
       ))}
     </ul>
-  </Layout>
+  </div>
 )
 
 export default ProductsPage
 
 export const query = graphql`
   {
-    allShopifyProduct(sort: { fields: [title] }) {
-      edges {
-        node {
-          title
-          shopifyId
-          description
-          handle
-          priceRange {
-            minVariantPrice {
-              amount
+  allShopifyProduct(sort: {fields: [title]}) {
+    edges {
+      node {
+        title
+        images {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 300) {
+               ...GatsbyImageSharpFluid 
+              }
             }
+          }
+        }
+        shopifyId
+        description
+        handle
+        priceRange {
+          minVariantPrice {
+            amount
           }
         }
       }
     }
   }
+}
 `
