@@ -1,7 +1,6 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-
-import Layout from "../components/layout"
+import Img from "gatsby-image"
 
 const ProductsPage = ({ data }) => (
   <Layout>
@@ -17,12 +16,10 @@ const ProductsPage = ({ data }) => (
             {" - "}${node.priceRange.minVariantPrice.amount}
           </h3>
           <p>{node.description}</p>
+          <Img fluid={node.images[0].localFile.childImageSharp.fluid} />
         </li>
       ))}
     </ul> */}
-    <div>
-
-    </div>
   </Layout>
 )
 
@@ -53,6 +50,14 @@ export const query = graphql`
           currencyCode
         }
         sku
+        shopifyId
+        description
+        handle
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+        }
       }
     }
   }
