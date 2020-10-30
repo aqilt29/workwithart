@@ -5,7 +5,10 @@ import Layout from "../components/layout"
 
 const ProductsPage = ({ data }) => (
   <Layout>
-    <h1>Products</h1>
+    <pre>
+      {JSON.stringify(data, null, 2)}
+    </pre>
+    {/* <h1>Products</h1>
     <ul>
       {data.allShopifyProduct.edges.map(({ node }) => (
         <li key={node.shopifyId}>
@@ -16,28 +19,42 @@ const ProductsPage = ({ data }) => (
           <p>{node.description}</p>
         </li>
       ))}
-    </ul>
+    </ul> */}
+    <div>
+
+    </div>
   </Layout>
 )
 
 export default ProductsPage
 
 export const query = graphql`
-  {
-    allShopifyProduct(sort: { fields: [title] }) {
-      edges {
-        node {
-          title
-          shopifyId
-          description
-          handle
-          priceRange {
-            minVariantPrice {
-              amount
+{
+  allShopifyProduct(limit: 10) {
+    nodes {
+      id
+      title
+      productType
+      description
+      variants {
+        id
+        image {
+          localFile {
+            childImageSharp {
+              id
+              fluid {
+                srcSet
+              }
             }
           }
         }
+        priceV2 {
+          amount
+          currencyCode
+        }
+        sku
       }
     }
   }
+}
 `
